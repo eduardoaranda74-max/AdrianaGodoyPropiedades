@@ -1,0 +1,15 @@
+/* Color rojo Adriana Godoy para botones */
+.btn-outline-primary {
+    color: #e63946;
+    border-color: #e63946;
+}
+
+.btn-outline-primary:hover {
+    background-color: #e63946;
+    border-color: #e63946;
+    color: white;
+}
+
+.card-title {
+    color: #0077b6 !important; /* Azul del logo */
+}
