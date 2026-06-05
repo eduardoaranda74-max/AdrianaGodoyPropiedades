@@ -5,10 +5,10 @@ function resolverImagen(url) {
   if (!url) return '';
   // Formato /d/FILE_ID/ (link de compartir)
   let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  if (match) return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
   // Formato ?id=FILE_ID o &id=FILE_ID
   match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  if (match) return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
   return url;
 }
 
