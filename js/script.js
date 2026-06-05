@@ -12,7 +12,7 @@ function resolverImagen(url) {
 
 // Genera un carrusel si hay varias imágenes (separadas por |), o una imagen simple.
 function crearGaleria(imagenStr, titulo, idx) {
-  const imagenes = String(imagenStr || '').split('|').map(u => u.trim()).filter(Boolean);
+  const imagenes = String(imagenStr || '').split(',').map(u => u.trim()).filter(Boolean);
   if (!imagenes.length) return `<div style="height:210px;background:#e9ecef;"></div>`;
 
   if (imagenes.length === 1) {
