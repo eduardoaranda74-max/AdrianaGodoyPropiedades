@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 [
   {
     "id": 1,
@@ -23,29 +22,3 @@
     "imagen": "img/local2.jpg"
   }
 ]
-=======
-[
-  {
-    "id": 1,
-    "titulo": "Departamento céntrico",
-    "operacion": "Venta",
-    "ubicacion": "Pilar",
-    "precio": "U$S 85.000",
-    "dormitorios": 2,
-    "baños": 1,
-    "descripcion": "Hermoso departamento luminoso con balcón.",
-    "imagen": "img/casa1.jpg"
-  },
-  {
-    "id": 2,
-    "titulo": "Local Comercial",
-    "operacion": "Alquiler",
-    "ubicacion": "Villa Rosa",
-    "precio": "$ 250.000",
-    "dormitorios": 0,
-    "baños": 2,
-    "descripcion": "Amplio local sobre avenida principal.",
-    "imagen": "img/local2.jpg"
-  }
-]
->>>>>>> 915a905 (carpeta json arreglada)

@@ -1,30 +1,105 @@
-// El fetch busca el JSON en la raíz de la carpeta Adriana-Godoy
-fetch('propiedades.json')
-    .then(response => response.json())
-    .then(data => {
-        const contenedor = document.getElementById('contenedor-propiedades');
-        
-        data.forEach(prop => {
-            const col = document.createElement('div');
-            col.className = 'col-12 col-md-6 col-lg-4'; // Responsivo: 1 col en movil, 3 en desktop
-            
-            col.innerHTML = `
-                <div class="card h-100 shadow-sm">
-                    <img src="${prop.imagen}" class="card-img-top" alt="${prop.titulo}" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">${prop.titulo}</h5>
-                        <p class="card-text text-muted small">${prop.ubicacion} | <span class="badge bg-secondary">${prop.operacion}</span></p>
-                        <p class="h5 text-danger">${prop.precio}</p>
-                        <hr>
-                        <p class="card-text">
-                            <strong>${prop.dormitorios}</strong> dormitorios<br>
-                            ${prop.baño}
-                        </p>
-                        <button class="btn btn-outline-primary w-100">Contactar</button>
-                    </div>
-                </div>
-            `;
-            contenedor.appendChild(col);
-        });
-    })
-    .catch(error => console.error('Error al cargar los datos:', error));
+let todasLasPropiedades = [];
+
+// Convierte el link de "Compartir" de Google Drive a URL directa de imagen.
+// Así podés copiar el enlace desde el celular sin tocar el ID manualmente.
+function resolverImagen(url) {
+  if (!url) return '';
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  return url;
+}
+
+async function cargarPropiedades() {
+  try {
+    let propiedades;
+
+    if (CONFIG.GOOGLE_SCRIPT_URL) {
+      const res = await fetch(CONFIG.GOOGLE_SCRIPT_URL, { redirect: 'follow' });
+      propiedades = await res.json();
+    } else {
+      const res = await fetch('propiedades.json');
+      propiedades = await res.json();
+    }
+
+    todasLasPropiedades = propiedades;
+    mostrarPropiedades(propiedades);
+  } catch (err) {
+    document.getElementById('contenedor-propiedades').innerHTML = `
+      <div class="col-12 text-center py-5">
+        <p class="text-danger">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>Error al cargar las propiedades.
+        </p>
+      </div>`;
+    console.error('Error al cargar propiedades:', err);
+  }
+}
+
+function mostrarPropiedades(lista) {
+  const contenedor = document.getElementById('contenedor-propiedades');
+  const contador = document.getElementById('contador');
+
+  const n = lista.length;
+  contador.textContent = `${n} propiedad${n !== 1 ? 'es' : ''} encontrada${n !== 1 ? 's' : ''}`;
+
+  if (!n) {
+    contenedor.innerHTML = `
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">No hay propiedades en esta categoría.</p>
+      </div>`;
+    return;
+  }
+
+  contenedor.innerHTML = lista.map(prop => {
+    const badgeClass = prop.operacion === 'Venta' ? 'bg-success' : 'bg-primary';
+    const dormitorios = parseInt(prop.dormitorios);
+    const dormText = dormitorios > 0
+      ? `<i class="bi bi-door-open me-1"></i>${dormitorios} dorm. &nbsp;`
+      : '';
+    const msgWA = encodeURIComponent(
+      `Hola Adriana! Me interesa la propiedad: ${prop.titulo} en ${prop.ubicacion}`
+    );
+
+    return `
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+          <img src="${resolverImagen(prop.imagen)}" class="card-img-top" alt="${prop.titulo}"
+               style="height: 210px; object-fit: cover;"
+               onerror="this.style.background='#e9ecef'; this.style.minHeight='210px';">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="card-title mb-0">${prop.titulo}</h5>
+              <span class="badge ${badgeClass} ms-2 flex-shrink-0">${prop.operacion}</span>
+            </div>
+            <p class="text-muted small mb-2">
+              <i class="bi bi-geo-alt-fill me-1"></i>${prop.ubicacion}
+            </p>
+            <p class="fw-bold fs-5 text-danger mb-1">${prop.precio}</p>
+            <p class="text-muted small mb-2">
+              ${dormText}<i class="bi bi-droplet me-1"></i>${prop.baños} baño${prop.baños != 1 ? 's' : ''}
+            </p>
+            <p class="card-text small text-secondary flex-grow-1">${prop.descripcion}</p>
+            <a href="https://wa.me/${CONFIG.WHATSAPP}?text=${msgWA}"
+               class="btn btn-outline-primary w-100 mt-auto" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-whatsapp me-2"></i>Consultar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// Filtros: Todas / Venta / Alquiler
+document.querySelectorAll('[data-filtro]').forEach(btn => {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('[data-filtro]').forEach(b => b.classList.remove('filtro-activo'));
+    this.classList.add('filtro-activo');
+
+    const filtro = this.dataset.filtro;
+    const filtradas = filtro === 'Todas'
+      ? todasLasPropiedades
+      : todasLasPropiedades.filter(p => p.operacion === filtro);
+    mostrarPropiedades(filtradas);
+  });
+});
+
+cargarPropiedades();

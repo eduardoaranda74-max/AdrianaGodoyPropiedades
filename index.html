@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adriana Godoy Propiedades</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Tu CSS personalizado -->
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adriana Godoy Propiedades</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-light">
 
-    <!-- Navbar con los colores del logo -->
-    <nav class="navbar navbar-dark" style="background-color: #0077b6;">
-        <div class="container">
-            <a class="navbar-brand" href="#">Adriana Godoy Propiedades</a>
-        </div>
-    </nav>
+  <nav class="navbar navbar-dark" style="background-color: #0077b6;">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">
+        <i class="bi bi-house-heart-fill me-2"></i>Adriana Godoy Propiedades
+      </a>
+    </div>
+  </nav>
 
-    <div class="container my-5">
-        <h2 class="text-center mb-4">Propiedades Destacadas</h2>
-        <!-- Contenedor donde JS cargará las propiedades -->
-        <div id="contenedor-propiedades" class="row g-4">
-            <!-- Las tarjetas se inyectan aquí -->
-        </div>
+  <div class="container my-5">
+    <h2 class="text-center mb-1">Propiedades Disponibles</h2>
+    <p class="text-center text-muted mb-4" id="contador"></p>
+
+    <!-- Filtros por operación -->
+    <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+      <button class="btn btn-filtro filtro-activo" data-filtro="Todas">Todas</button>
+      <button class="btn btn-filtro" data-filtro="Venta">Venta</button>
+      <button class="btn btn-filtro" data-filtro="Alquiler">Alquiler</button>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Tu Script personalizado -->
-    <script src="js/script.js"></script>
+    <div id="contenedor-propiedades" class="row g-4">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-muted">Cargando propiedades...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center text-muted py-4 mt-5 border-top small">
+    © 2025 Adriana Godoy Propiedades
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>

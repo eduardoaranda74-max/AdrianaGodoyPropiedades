@@ -1,15 +1,54 @@
-/* Color rojo Adriana Godoy para botones */
+/* Colores corporativos */
+:root {
+  --azul: #0077b6;
+  --rojo: #e63946;
+}
+
+/* Botón de contacto WhatsApp */
 .btn-outline-primary {
-    color: #e63946;
-    border-color: #e63946;
+  color: var(--rojo);
+  border-color: var(--rojo);
 }
 
 .btn-outline-primary:hover {
-    background-color: #e63946;
-    border-color: #e63946;
-    color: white;
+  background-color: var(--rojo);
+  border-color: var(--rojo);
+  color: white;
 }
 
 .card-title {
-    color: #0077b6 !important; /* Azul del logo */
+  color: var(--azul) !important;
+}
+
+/* Botones de filtro */
+.btn-filtro {
+  color: var(--azul);
+  border: 2px solid var(--azul);
+  border-radius: 20px;
+  padding: 6px 20px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-filtro:hover {
+  background-color: var(--azul);
+  color: white;
+}
+
+.btn-filtro.filtro-activo {
+  background-color: var(--azul);
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 180px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.4rem;
+  }
 }
