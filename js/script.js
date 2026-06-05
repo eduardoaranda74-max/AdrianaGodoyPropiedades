@@ -114,7 +114,7 @@ function mostrarPropiedades(lista) {
             </p>
             <p class="fw-bold fs-5 text-danger mb-1">${prop.precio}</p>
             <p class="text-muted small mb-2">
-              ${dormText}<i class="bi bi-droplet me-1"></i>${prop.baños} baño${prop.baños != 1 ? 's' : ''}
+              ${dormText}<i class="bi bi-droplet me-1"></i>${prop.banos} baño${prop.banos != 1 ? 's' : ''}
             </p>
             <p class="card-text small text-secondary flex-grow-1">${prop.descripcion}</p>
             <a href="https://wa.me/${CONFIG.WHATSAPP}?text=${msgWA}"
