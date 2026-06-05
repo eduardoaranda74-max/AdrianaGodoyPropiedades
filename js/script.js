@@ -1,11 +1,14 @@
 let todasLasPropiedades = [];
 
-// Convierte el link de "Compartir" de Google Drive a URL directa de imagen.
-// Así podés copiar el enlace desde el celular sin tocar el ID manualmente.
+// Convierte cualquier formato de link de Google Drive a URL directa de imagen.
 function resolverImagen(url) {
   if (!url) return '';
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  // Formato /d/FILE_ID/ (link de compartir)
+  let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  // Formato ?id=FILE_ID o &id=FILE_ID
+  match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
   return url;
 }
 
