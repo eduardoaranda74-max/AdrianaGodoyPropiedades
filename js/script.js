@@ -3,13 +3,40 @@ let todasLasPropiedades = [];
 // Convierte cualquier formato de link de Google Drive a URL directa de imagen.
 function resolverImagen(url) {
   if (!url) return '';
-  // Formato /d/FILE_ID/ (link de compartir)
   let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if (match) return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
-  // Formato ?id=FILE_ID o &id=FILE_ID
   match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (match) return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
   return url;
+}
+
+// Genera un carrusel si hay varias imágenes (separadas por |), o una imagen simple.
+function crearGaleria(imagenStr, titulo, idx) {
+  const imagenes = String(imagenStr || '').split('|').map(u => u.trim()).filter(Boolean);
+  if (!imagenes.length) return `<div style="height:210px;background:#e9ecef;"></div>`;
+
+  if (imagenes.length === 1) {
+    return `<img src="${resolverImagen(imagenes[0])}" class="card-img-top" alt="${titulo}"
+                 style="height:210px;object-fit:cover;"
+                 onerror="this.style.background='#e9ecef'">`;
+  }
+
+  const items = imagenes.map((img, i) => `
+    <div class="carousel-item ${i === 0 ? 'active' : ''}">
+      <img src="${resolverImagen(img)}" class="d-block w-100" alt="${titulo}"
+           style="height:210px;object-fit:cover;" onerror="this.style.background='#e9ecef'">
+    </div>`).join('');
+
+  return `
+    <div id="carousel-${idx}" class="carousel slide" data-bs-ride="false">
+      <div class="carousel-inner">${items}</div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${idx}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel-${idx}" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>`;
 }
 
 // Normaliza las claves del objeto: saca acentos y pone minúsculas.
@@ -63,7 +90,7 @@ function mostrarPropiedades(lista) {
     return;
   }
 
-  contenedor.innerHTML = lista.map(prop => {
+  contenedor.innerHTML = lista.map((prop, idx) => {
     const badgeClass = prop.operacion === 'Venta' ? 'bg-success' : 'bg-primary';
     const dormitorios = parseInt(prop.dormitorios);
     const dormText = dormitorios > 0
@@ -76,9 +103,7 @@ function mostrarPropiedades(lista) {
     return `
       <div class="col-12 col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm">
-          <img src="${resolverImagen(prop.imagen)}" class="card-img-top" alt="${prop.titulo}"
-               style="height: 210px; object-fit: cover;"
-               onerror="this.style.background='#e9ecef'; this.style.minHeight='210px';">
+          ${crearGaleria(prop.imagen, prop.titulo, idx)}
           <div class="card-body d-flex flex-column">
             <div class="d-flex justify-content-between align-items-start mb-1">
               <h5 class="card-title mb-0">${prop.titulo}</h5>
