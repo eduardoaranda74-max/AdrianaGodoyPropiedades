@@ -12,6 +12,17 @@ function resolverImagen(url) {
   return url;
 }
 
+// Normaliza las claves del objeto: saca acentos y pone minúsculas.
+// Así funciona sin importar cómo estén escritos los encabezados en la planilla.
+function normalizarClaves(prop) {
+  const resultado = {};
+  for (const [clave, valor] of Object.entries(prop)) {
+    const claveNorm = clave.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+    resultado[claveNorm] = valor;
+  }
+  return resultado;
+}
+
 async function cargarPropiedades() {
   try {
     let propiedades;
@@ -24,8 +35,8 @@ async function cargarPropiedades() {
       propiedades = await res.json();
     }
 
-    todasLasPropiedades = propiedades;
-    mostrarPropiedades(propiedades);
+    todasLasPropiedades = propiedades.map(normalizarClaves);
+    mostrarPropiedades(todasLasPropiedades);
   } catch (err) {
     document.getElementById('contenedor-propiedades').innerHTML = `
       <div class="col-12 text-center py-5">
