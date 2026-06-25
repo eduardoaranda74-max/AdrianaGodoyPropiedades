@@ -8,21 +8,33 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-light">
+<body>
 
-  <nav class="navbar navbar-dark" style="background-color: #0077b6;">
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark" style="background-color: var(--azul);">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">
-        <i class="bi bi-house-heart-fill me-2"></i>Adriana Godoy Propiedades
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <img src="img/logo.png" alt="Logo Adriana Godoy" height="52" class="logo-nav">
+        <span class="fw-bold fs-5 d-none d-sm-inline">Adriana Godoy Propiedades</span>
       </a>
     </div>
   </nav>
 
-  <div class="container my-5">
-    <h2 class="text-center mb-1">Propiedades Disponibles</h2>
-    <p class="text-center text-muted mb-4" id="contador"></p>
+  <!-- HERO BANNER -->
+  <div class="hero-banner">
+    <div class="hero-azul">
+      <h1 class="hero-titulo">Encontrá tu propiedad ideal</h1>
+    </div>
+    <div class="hero-rojo">
+      <p class="hero-subtitulo">Venta y alquiler en Pilar y zona norte</p>
+    </div>
+  </div>
 
-    <!-- Filtros por operación -->
+  <!-- CONTENIDO -->
+  <div class="container my-5">
+    <p class="text-center text-muted mb-3" id="contador"></p>
+
+    <!-- Filtros -->
     <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
       <button class="btn btn-filtro filtro-activo" data-filtro="Todas">Todas</button>
       <button class="btn btn-filtro" data-filtro="Venta">Venta</button>
@@ -37,8 +49,12 @@
     </div>
   </div>
 
-  <footer class="text-center text-muted py-4 mt-5 border-top small">
-    © 2025 Adriana Godoy Propiedades
+  <!-- FOOTER -->
+  <footer class="footer-custom py-4 mt-5">
+    <div class="container text-center text-white">
+      <img src="img/logo.png" alt="Logo" height="60" class="logo-nav mb-2">
+      <p class="mb-0 small">© 2025 Adriana Godoy Propiedades</p>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,54 +1,90 @@
-/* Colores corporativos */
+/* ── Colores corporativos ── */
 :root {
-  --azul: #0077b6;
-  --rojo: #e63946;
+  --azul: #1B9BD6;
+  --rojo: #E03535;
 }
 
-/* Botón de contacto WhatsApp */
+/* ── Navbar ── */
+.logo-nav {
+  border-radius: 6px;
+}
+
+/* ── Hero banner ── */
+.hero-banner {
+  display: flex;
+  flex-direction: column;
+}
+.hero-azul {
+  background-color: var(--azul);
+  padding: 36px 20px 20px;
+  text-align: center;
+}
+.hero-rojo {
+  background-color: var(--rojo);
+  padding: 14px 20px;
+  text-align: center;
+}
+.hero-titulo {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+.hero-subtitulo {
+  color: white;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ── Cards ── */
+.card-title {
+  color: var(--azul) !important;
+}
+.card:hover {
+  transform: translateY(-3px);
+  transition: transform 0.2s;
+}
+
+/* ── Botón WhatsApp / contacto ── */
 .btn-outline-primary {
   color: var(--rojo);
   border-color: var(--rojo);
 }
-
 .btn-outline-primary:hover {
   background-color: var(--rojo);
   border-color: var(--rojo);
   color: white;
 }
 
-.card-title {
-  color: var(--azul) !important;
+/* ── Precio ── */
+.text-danger {
+  color: var(--rojo) !important;
 }
 
-/* Botones de filtro */
+/* ── Botones de filtro ── */
 .btn-filtro {
   color: var(--azul);
   border: 2px solid var(--azul);
   border-radius: 20px;
-  padding: 6px 20px;
+  padding: 6px 22px;
   font-weight: 500;
   transition: all 0.2s;
+  background: white;
 }
-
-.btn-filtro:hover {
-  background-color: var(--azul);
-  color: white;
-}
-
+.btn-filtro:hover,
 .btn-filtro.filtro-activo {
   background-color: var(--azul);
   color: white;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .card-img-top {
-    height: 180px !important;
-  }
+/* ── Footer ── */
+.footer-custom {
+  background: linear-gradient(to right, var(--azul), var(--rojo));
 }
 
-@media (max-width: 480px) {
-  h2 {
-    font-size: 1.4rem;
-  }
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero-titulo { font-size: 1.5rem; }
+  .hero-subtitulo { font-size: 1rem; }
 }
