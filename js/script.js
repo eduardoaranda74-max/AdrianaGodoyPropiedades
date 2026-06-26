@@ -17,14 +17,17 @@ function crearGaleria(imagenStr, titulo, idx) {
 
   if (imagenes.length === 1) {
     return `<img src="${resolverImagen(imagenes[0])}" class="card-img-top" alt="${titulo}"
-                 style="height:210px;object-fit:cover;"
+                 style="height:210px;object-fit:cover;cursor:zoom-in;"
+                 onclick="abrirImagen(this.src)"
                  onerror="this.style.background='#e9ecef'">`;
   }
 
   const items = imagenes.map((img, i) => `
     <div class="carousel-item ${i === 0 ? 'active' : ''}">
       <img src="${resolverImagen(img)}" class="d-block w-100" alt="${titulo}"
-           style="height:210px;object-fit:cover;" onerror="this.style.background='#e9ecef'">
+           style="height:210px;object-fit:cover;cursor:zoom-in;"
+           onclick="abrirImagen(this.src)"
+           onerror="this.style.background='#e9ecef'">
     </div>`).join('');
 
   return `
@@ -140,5 +143,10 @@ document.querySelectorAll('[data-filtro]').forEach(btn => {
     mostrarPropiedades(filtradas);
   });
 });
+
+function abrirImagen(src) {
+  document.getElementById('imagenAmpliada').src = src;
+  new bootstrap.Modal(document.getElementById('modalImagen')).show();
+}
 
 cargarPropiedades();
