@@ -4,37 +4,24 @@
   --rojo: #E03535;
 }
 
-/* ── Navbar ── */
-.logo-nav {
-  border-radius: 6px;
-}
-
-/* ── Hero banner ── */
-.hero-banner {
-  display: flex;
-  flex-direction: column;
-}
-.hero-azul {
+/* ── Header ── */
+.site-header {
   background-color: var(--azul);
-  padding: 36px 20px 20px;
   text-align: center;
+  padding: 28px 20px 0;
 }
-.hero-rojo {
+.header-logo {
+  width: min(220px, 55vw);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.header-slogan {
   background-color: var(--rojo);
-  padding: 14px 20px;
-  text-align: center;
-}
-.hero-titulo {
   color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-}
-.hero-subtitulo {
-  color: white;
-  font-size: 1.1rem;
-  margin: 0;
+  font-size: 1rem;
   font-weight: 500;
+  margin: 20px -20px 0;
+  padding: 10px 20px;
 }
 
 /* ── Cards ── */
