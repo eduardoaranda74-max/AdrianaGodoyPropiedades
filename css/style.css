@@ -6,22 +6,29 @@
 
 /* ── Header ── */
 .site-header {
+  position: relative;
   background-color: var(--azul);
   text-align: center;
-  padding: 28px 20px 0;
+  padding: 0;
+  line-height: 0;
+}
+/* Franja roja inferior que extiende el color del logo a todo el ancho */
+.site-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 33%;
+  background-color: var(--rojo);
 }
 .header-logo {
-  width: min(220px, 55vw);
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-}
-.header-slogan {
-  background-color: var(--rojo);
-  color: white;
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 20px -20px 0;
-  padding: 10px 20px;
+  position: relative;
+  z-index: 1;
+  width: min(300px, 90vw);
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 /* ── Cards ── */
