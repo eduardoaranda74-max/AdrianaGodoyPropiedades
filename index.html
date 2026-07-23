@@ -36,14 +36,17 @@
     </div>
   </div>
 
-  <!-- Modal imagen ampliada -->
+  <!-- Modal imagen ampliada con navegación -->
   <div class="modal fade" id="modalImagen" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content bg-dark border-0">
-        <div class="modal-body p-1 position-relative">
+        <div class="modal-body p-0 position-relative">
           <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2 z-3"
                   data-bs-dismiss="modal"></button>
+          <span id="contadorModal" class="position-absolute top-0 start-50 translate-middle-x mt-2 text-white small z-3"></span>
+          <button id="btnAnteriorModal" onclick="imagenAnterior()" class="btn-nav-modal" style="left:0">&#8249;</button>
           <img id="imagenAmpliada" src="" class="img-fluid w-100 rounded" alt="Imagen ampliada">
+          <button id="btnSiguienteModal" onclick="imagenSiguiente()" class="btn-nav-modal" style="right:0">&#8250;</button>
         </div>
       </div>
     </div>

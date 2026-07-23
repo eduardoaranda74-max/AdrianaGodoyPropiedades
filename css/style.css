@@ -61,6 +61,26 @@
   background: linear-gradient(to right, var(--azul), var(--rojo));
 }
 
+/* ── Lightbox flechas ── */
+.btn-nav-modal {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  font-size: 2.5rem;
+  line-height: 1;
+  padding: 8px 16px;
+  cursor: pointer;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+}
+.btn-nav-modal:hover {
+  background: rgba(0,0,0,0.8);
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .hero-titulo { font-size: 1.5rem; }

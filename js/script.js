@@ -1,6 +1,7 @@
 let todasLasPropiedades = [];
+const galeriasImagenes = {}; // almacena las imágenes de cada tarjeta para el lightbox
+let imagenActual = { imagenes: [], idx: 0 };
 
-// Convierte cualquier formato de link de Google Drive a URL directa de imagen.
 function resolverImagen(url) {
   if (!url) return '';
   let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -10,40 +11,40 @@ function resolverImagen(url) {
   return url;
 }
 
-// Genera un carrusel si hay varias imágenes (separadas por |), o una imagen simple.
-function crearGaleria(imagenStr, titulo, idx) {
+function crearGaleria(imagenStr, titulo, galeriaIdx) {
   const imagenes = String(imagenStr || '').split(',').map(u => u.trim()).filter(Boolean);
   if (!imagenes.length) return `<div style="height:210px;background:#e9ecef;"></div>`;
 
-  if (imagenes.length === 1) {
-    return `<img src="${resolverImagen(imagenes[0])}" class="card-img-top" alt="${titulo}"
+  const resueltas = imagenes.map(resolverImagen);
+  galeriasImagenes[galeriaIdx] = resueltas;
+
+  if (resueltas.length === 1) {
+    return `<img src="${resueltas[0]}" class="card-img-top" alt="${titulo}"
                  style="height:210px;object-fit:cover;cursor:zoom-in;"
-                 onclick="abrirImagen(this.src)"
+                 onclick="abrirImagen(${galeriaIdx}, 0)"
                  onerror="this.style.background='#e9ecef'">`;
   }
 
-  const items = imagenes.map((img, i) => `
+  const items = resueltas.map((src, i) => `
     <div class="carousel-item ${i === 0 ? 'active' : ''}">
-      <img src="${resolverImagen(img)}" class="d-block w-100" alt="${titulo}"
+      <img src="${src}" class="d-block w-100" alt="${titulo}"
            style="height:210px;object-fit:cover;cursor:zoom-in;"
-           onclick="abrirImagen(this.src)"
+           onclick="abrirImagen(${galeriaIdx}, ${i})"
            onerror="this.style.background='#e9ecef'">
     </div>`).join('');
 
   return `
-    <div id="carousel-${idx}" class="carousel slide" data-bs-ride="false">
+    <div id="carousel-${galeriaIdx}" class="carousel slide" data-bs-ride="false">
       <div class="carousel-inner">${items}</div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${idx}" data-bs-slide="prev">
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${galeriaIdx}" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carousel-${idx}" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel-${galeriaIdx}" data-bs-slide="next">
         <span class="carousel-control-next-icon"></span>
       </button>
     </div>`;
 }
 
-// Normaliza las claves del objeto: saca acentos y pone minúsculas.
-// Así funciona sin importar cómo estén escritos los encabezados en la planilla.
 function normalizarClaves(prop) {
   const resultado = {};
   for (const [clave, valor] of Object.entries(prop)) {
@@ -56,7 +57,6 @@ function normalizarClaves(prop) {
 async function cargarPropiedades() {
   try {
     let propiedades;
-
     if (CONFIG.GOOGLE_SCRIPT_URL) {
       const res = await fetch(CONFIG.GOOGLE_SCRIPT_URL, { redirect: 'follow' });
       propiedades = await res.json();
@@ -64,7 +64,6 @@ async function cargarPropiedades() {
       const res = await fetch('propiedades.json');
       propiedades = await res.json();
     }
-
     todasLasPropiedades = propiedades.map(normalizarClaves);
     mostrarPropiedades(todasLasPropiedades);
   } catch (err) {
@@ -94,11 +93,11 @@ function mostrarPropiedades(lista) {
   }
 
   contenedor.innerHTML = lista.map((prop, idx) => {
-    const badgeClass = prop.operacion === 'Venta' ? 'bg-success' : 'bg-primary';
+    const operacion = String(prop.operacion || '').trim();
+    const badgeClass = operacion.toLowerCase() === 'venta' ? 'bg-success' : 'bg-primary';
     const dormitorios = parseInt(prop.dormitorios);
     const dormText = dormitorios > 0
-      ? `<i class="bi bi-door-open me-1"></i>${dormitorios} dorm. &nbsp;`
-      : '';
+      ? `<i class="bi bi-door-open me-1"></i>${dormitorios} dorm. &nbsp;` : '';
     const msgWA = encodeURIComponent(
       `Hola Adriana! Me interesa la propiedad: ${prop.titulo} en ${prop.ubicacion}`
     );
@@ -110,7 +109,7 @@ function mostrarPropiedades(lista) {
           <div class="card-body d-flex flex-column">
             <div class="d-flex justify-content-between align-items-start mb-1">
               <h5 class="card-title mb-0">${prop.titulo}</h5>
-              <span class="badge ${badgeClass} ms-2 flex-shrink-0">${prop.operacion}</span>
+              <span class="badge ${badgeClass} ms-2 flex-shrink-0">${operacion}</span>
             </div>
             <p class="text-muted small mb-2">
               <i class="bi bi-geo-alt-fill me-1"></i>${prop.ubicacion}
@@ -130,7 +129,7 @@ function mostrarPropiedades(lista) {
   }).join('');
 }
 
-// Filtros: Todas / Venta / Alquiler
+// Filtros — comparación sin importar mayúsculas ni espacios
 document.querySelectorAll('[data-filtro]').forEach(btn => {
   btn.addEventListener('click', function () {
     document.querySelectorAll('[data-filtro]').forEach(b => b.classList.remove('filtro-activo'));
@@ -139,14 +138,37 @@ document.querySelectorAll('[data-filtro]').forEach(btn => {
     const filtro = this.dataset.filtro;
     const filtradas = filtro === 'Todas'
       ? todasLasPropiedades
-      : todasLasPropiedades.filter(p => p.operacion === filtro);
+      : todasLasPropiedades.filter(p =>
+          String(p.operacion || '').trim().toLowerCase() === filtro.toLowerCase()
+        );
     mostrarPropiedades(filtradas);
   });
 });
 
-function abrirImagen(src) {
-  document.getElementById('imagenAmpliada').src = src;
-  new bootstrap.Modal(document.getElementById('modalImagen')).show();
+// Lightbox con navegación
+function abrirImagen(galeriaIdx, imagenIdx) {
+  imagenActual = { imagenes: galeriasImagenes[galeriaIdx] || [], idx: imagenIdx };
+  actualizarModal();
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImagen')).show();
+}
+
+function actualizarModal() {
+  document.getElementById('imagenAmpliada').src = imagenActual.imagenes[imagenActual.idx] || '';
+  const hayVarias = imagenActual.imagenes.length > 1;
+  document.getElementById('btnAnteriorModal').style.display = hayVarias ? 'flex' : 'none';
+  document.getElementById('btnSiguienteModal').style.display = hayVarias ? 'flex' : 'none';
+  document.getElementById('contadorModal').textContent =
+    hayVarias ? `${imagenActual.idx + 1} / ${imagenActual.imagenes.length}` : '';
+}
+
+function imagenAnterior() {
+  imagenActual.idx = (imagenActual.idx - 1 + imagenActual.imagenes.length) % imagenActual.imagenes.length;
+  actualizarModal();
+}
+
+function imagenSiguiente() {
+  imagenActual.idx = (imagenActual.idx + 1) % imagenActual.imagenes.length;
+  actualizarModal();
 }
 
 cargarPropiedades();
