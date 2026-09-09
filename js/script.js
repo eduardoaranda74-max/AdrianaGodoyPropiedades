@@ -12,7 +12,7 @@ function resolverImagen(url) {
 }
 
 function crearGaleria(imagenStr, titulo, galeriaIdx) {
-  const imagenes = String(imagenStr || '').split(',').map(u => u.trim()).filter(Boolean);
+  const imagenes = String(imagenStr || '').split('|').map(u => u.trim()).filter(Boolean);
   if (!imagenes.length) return `<div style="height:210px;background:#e9ecef;"></div>`;
 
   const resueltas = imagenes.map(resolverImagen);

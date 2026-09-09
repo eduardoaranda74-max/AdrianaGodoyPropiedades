@@ -18,6 +18,12 @@
  * 3. Copiá el ID del archivo (la parte larga de la URL entre /d/ y /view)
  * 4. En la columna "imagen" de la planilla usá este formato:
  *    https://drive.google.com/uc?export=view&id=TU_ID_AQUI
+ *
+ * VARIAS IMÁGENES POR PROPIEDAD (galería/carrusel):
+ * Separalas con el caracter "|" (pipe), NO con coma — las URLs de Cloudinary
+ * ya usan comas en la transformación (ej: f_auto,q_auto) y se cortan mal si
+ * se usa coma como separador. Ejemplo en la celda "imagen":
+ *    https://res.cloudinary.com/pda9qzir/image/upload/f_auto,q_auto/foto1.jpg|https://res.cloudinary.com/pda9qzir/image/upload/f_auto,q_auto/foto2.jpg
  */
 function doGet() {
   const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Propiedades');
