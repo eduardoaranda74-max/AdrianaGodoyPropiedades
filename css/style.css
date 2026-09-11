@@ -6,16 +6,13 @@
 
 /* ── Header ── */
 .site-header {
-  padding: 10px 0;
+  padding: 0;
   line-height: 0;
-  text-align: center;
 }
 .header-logo {
-  width: auto;
+  width: 100%;
   height: auto;
-  max-height: 130px;
-  max-width: 100%;
-  display: inline-block;
+  display: block;
 }
 
 /* ── Cards ── */
